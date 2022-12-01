@@ -2,19 +2,21 @@ import * as tuitsDao from '../../tuits/tuits-dao.js'
 // import posts from "./tuits.js";
 // let tuits = posts;
 
-const createTuit = (req, res) => {
+const createTuit = async (req, res) => {
     const newTuit = req.body;
-    newTuit._id = (new Date()).getTime()+'';
+    // newTuit._id = (new Date()).getTime()+'';
     newTuit.likes = 0;
     newTuit.liked = false;
-    tuits.push(newTuit);
+    // tuits.push(newTuit);
+    const insertedTuit = await tuitsDao
+        .createTuit(newTuit);
     res.json(newTuit);
 }
 const findTuits = async (req, res) => {
     const tuits = await tuitsDao.findTuits()
     res.json(tuits);
 }
-const updateTuit = (req, res) => {
+const updateTuit = async (req, res) => {
     const tuitdIdToUpdate = req.params.tid;
     const updates = req.body;
     const tuitIndex = tuits.findIndex(
@@ -23,7 +25,7 @@ const updateTuit = (req, res) => {
         {...tuits[tuitIndex], ...updates};
     res.sendStatus(200);
 }
-const deleteTuit = (req, res) => {
+const deleteTuit = async (req, res) => {
     const tuitdIdToDelete = req.params.tid;
     tuits = tuits.filter((t) =>
         t._id !== tuitdIdToDelete);
